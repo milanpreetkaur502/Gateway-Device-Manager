@@ -125,7 +125,7 @@ class tables():
         return conn
         
 p1=tables()
-p1.updatetable('Cloud','C_Status','Active')
+#p1.updatetable('Cloud','C_Status','Active')
 #print(p1.getdata('Node'))
 #p1.calltable()
 
