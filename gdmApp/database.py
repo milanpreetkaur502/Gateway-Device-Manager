@@ -121,7 +121,7 @@ class tables():
             #self.putdatabeacon(tablevalue,data)
 
     def connect(self):
-        conn = sqlite3.connect('/usr/sbin/app/mydatabasenew.db',check_same_thread=False)
+        conn = sqlite3.connect('/usr/sbin/mydatabasenew.db',check_same_thread=False)
         return conn
         
 p1=tables()
