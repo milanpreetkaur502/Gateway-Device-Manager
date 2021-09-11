@@ -3,12 +3,13 @@ import subprocess   #module import for dealing with execution of console command
 from gdmApp import app
 from .database import p1 as db
 
-path=(__file__).split('/')
-path.pop()
-path.pop()
-path.pop()
-path="/".join(path)
-path=path+'/certUploads/'
+#path=(__file__).split('/')
+#path.pop()
+#path.pop()
+#path.pop()
+#path="/".join(path)
+
+path='usr/sbin/certUploads/'
 
 
 @app.route('/login',methods=['GET','POST'])   #route for handling login
