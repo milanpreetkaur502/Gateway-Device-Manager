@@ -4,13 +4,13 @@ from gdmApp import app
 from .database import p1 as db
 import os
 
-path=(__file__).split('/')
-path.pop()
-path.pop()
-path.pop()
-path="/".join(path)
-path=path+'/certUploads/' 
-
+#path=(__file__).split('/')
+#path.pop()
+#path.pop()
+#path.pop()
+#path="/".join(path)
+#path=path+'/certUploads/' 
+path='/usr/sbin/certUploads/'
 
 @app.route('/login',methods=['GET','POST'])   #route for handling login
 def login():
