@@ -1,4 +1,4 @@
 import sys
-sys.path.insert(0,'/usr/share/apache2/default-site/htdocs/gdm')
+sys.path.insert(0,'/home/lab/gateway/Gateway_POC/demo/gatewayDeviceManager/gdm')
 
 from gdmApp import app as application
