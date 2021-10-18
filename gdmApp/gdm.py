@@ -128,10 +128,11 @@ def networkConfig():
                 security="psk"
             confObject.updateData("network",{"TYPE":"WIFI","SSID":ssid,"PASSPHRASE":password,"SECURITY":security})
         return render_template('networkConfig.html')
-    return redirect(url_for('login'))
     subprocess.run(['/usr/sbin/control_scripts/wifi_control.sh'])
     subprocess.run(['/usr/sbin/control_scripts/restart_app.sh'])
     subprocess.run(['/usr/sbin/control_scripts/restart_job.sh'])
+    return redirect(url_for('login'))
+    
 
 @app.route('/debug')
 def debug():
