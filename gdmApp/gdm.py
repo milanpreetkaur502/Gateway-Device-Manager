@@ -44,14 +44,14 @@ def home():
         else:
             serverType='Secured'
         cloudData={'server':server,'serverType':serverType,'hostAdd':cloud["HOST"],'port':cloud["PORT"],'status':cloud['C_STATUS'],'topic':cloud['publishTopic'],'pubFlag':cloud['PUBFLAG']}
-        return render_template('home.html',nodeData=nodeData,cloudData=cloudData,deviceData=ip)
+        deviceData=confObject.getData("device")
+        return render_template('home.html',nodeData=nodeData,cloudData=cloudData,data=deviceData,ip=ip)
     return redirect(url_for('login'))
 
 @app.route('/deviceConfig',methods=['GET'])
 def deviceConfig():
     if 'logedIn' in session:
         data=confObject.getData("device")
-
         return render_template('deviceConfig.html',ip=ip,data=data)
     return redirect(url_for('login'))
 
@@ -60,10 +60,12 @@ def logSwitcher():
     if request.method=="POST":
         if 'logStatus' in request.form:
             confObject.updateData('device',{'LOGGINGFLAG':'Active'})
-            subprocess.run(['/usr/sbin/restart_script.sh'])
+            subprocess.run(['/usr/sbin/control_scripts/restart_app.sh'])
+            subprocess.run(['/usr/sbin/control_scripts/restart_job.sh'])
         else:
             confObject.updateData('device',{'LOGGINGFLAG':'Inactive'})
-            subprocess.run(['/usr/sbin/restart_script.sh'])
+            subprocess.run(['/usr/sbin/control_scripts/restart_app.sh'])
+            subprocess.run(['/usr/sbin/control_scripts/restart_job.sh'])
     return redirect(url_for('deviceConfig'))
 
 
@@ -73,12 +75,14 @@ def cloudConfig():
         if request.method=="POST":     #need db integration for here
             if 'status' in request.form:
                 confObject.updateData('cloud',{'C_STATUS':request.form['status']})
-                subprocess.run(['/usr/sbin/restart_script.sh'])
+                subprocess.run(['/usr/sbin/control_scripts/restart_app.sh'])
+                subprocess.run(['/usr/sbin/control_scripts/restart_job.sh'])
             server=request.form.get('server')
             if 'server' in request.form:
                 di={'SERVER_TYPE':server,'HOST':request.form['hostAdd'],'PORT':request.form['port'],'PUBFLAG':'False'}
                 confObject.updateData('cloud',di)
-                subprocess.run(['/usr/sbin/restart_script.sh'])
+                subprocess.run(['/usr/sbin/control_scripts/restart_app.sh'])
+                subprocess.run(['/usr/sbin/control_scripts/restart_job.sh'])
             if server=='aws':
                 root=request.files['rootFile']                  #accessing the uploaded files
                 pvtKey=request.files['pvtKey']
@@ -102,17 +106,32 @@ def nodeConfig():
     if 'logedIn' in session:
         if request.method=="POST":
             confObject.updateData('node',{'SCAN_TIME':request.form['scanRate'],'N_STATUS':request.form['status']})
-            subprocess.run(['/usr/sbin/restart_script.sh'])
+            subprocess.run(['/usr/sbin/control_scripts/restart_app.sh'])
+            subprocess.run(['/usr/sbin/control_scripts/restart_job.sh'])
         nodeData=confObject.getData('node')
         nodeData={'scanRate':nodeData['SCAN_TIME'],'status':nodeData['N_STATUS']}
         return render_template('nodeConfig.html',nodeData=nodeData)
     return redirect(url_for('login'))
 
-@app.route('/netConfig')
+@app.route('/netConfig',methods=['GET','POST'])
 def networkConfig():
     if 'logedIn' in session:
+        if request.method=="POST":
+            ssid=request.form['ssid']
+            password=""
+            if 'security' in request.form:
+                password="none"
+                security="none"
+
+            else:
+                password=request.form["passForWifi"]
+                security="psk"
+            confObject.updateData("network",{"TYPE":"WIFI","SSID":ssid,"PASSPHRASE":password,"SECURITY":security})
         return render_template('networkConfig.html')
     return redirect(url_for('login'))
+    subprocess.run(['/usr/sbin/control_scripts/wifi_control.sh'])
+    subprocess.run(['/usr/sbin/control_scripts/restart_app.sh'])
+    subprocess.run(['/usr/sbin/control_scripts/restart_job.sh'])
 
 @app.route('/debug')
 def debug():
