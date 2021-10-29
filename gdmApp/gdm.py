@@ -49,7 +49,7 @@ def home():
             serverType='Unsecured'
         else:
             serverType='Secured'
-        cloudData={'server':server,'serverType':serverType,'hostAdd':cloud["HOST"],'port':cloud["PORT"],'status':cloud['C_STATUS'],'topic':cloud['publishTopic'],'pubFlag':cloud['PUBFLAG']}
+        cloudData={'server':server,'serverType':serverType,'hostAdd':cloud["HOST"],'port':cloud["PORT"],'status':cloud['C_STATUS'],'topic':cloud['PUBLISH_TOPIC'],'pubFlag':cloud['PUBFLAG']}
         deviceData=confObject.getData("device")
         return render_template('home.html',nodeData=nodeData,cloudData=cloudData,data=deviceData,ip=ip)
     return redirect(url_for('login'))
@@ -103,7 +103,7 @@ def cloudConfig():
             serverType='Unsecured'
         else:
             serverType='Secured'
-        cloudData={'server':server,'serverType':serverType,'hostAdd':cloud["HOST"],'port':cloud["PORT"],'status':cloud['C_STATUS'],'topic':cloud['publishTopic'],'pubFlag':cloud['PUBFLAG']}
+        cloudData={'server':server,'serverType':serverType,'hostAdd':cloud["HOST"],'port':cloud["PORT"],'status':cloud['C_STATUS'],'topic':cloud['PUBLISH_TOPIC'],'pubFlag':cloud['PUBFLAG']}
         return render_template('cloudConfig.html',cloudData=cloudData)
     return redirect(url_for('login'))
 
