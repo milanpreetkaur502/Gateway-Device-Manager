@@ -85,7 +85,7 @@ def cloudConfig():
                 #subprocess.run(['/usr/sbin/control_scripts/restart_job.sh'])
             server=request.form.get('server')
             if 'server' in request.form:
-                di={'SERVER_TYPE':server,'HOST':request.form['hostAdd'],'PORT':request.form['port'],'PUBFLAG':'False'}
+                di={'SERVER_TYPE':server,'HOST':request.form['hostAdd'],'PORT':request.form['port'],'PUBFLAG':'Inactive'}
                 confObject.updateData('cloud',di)
                 #subprocess.run(['/usr/sbin/control_scripts/restart_app.sh'])
                 #subprocess.run(['/usr/sbin/control_scripts/restart_job.sh'])
